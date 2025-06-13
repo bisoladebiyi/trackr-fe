@@ -10,6 +10,7 @@ const Input = ({
   inputID,
   placeholder,
   className,
+  name
 }) => {
   if (type === "select") {
     return (
@@ -53,6 +54,7 @@ const Input = ({
         required={required}
         id={inputID}
         placeholder={placeholder}
+        name={name}
         className={`border outline-none rounded-md shadow-sm border-gray-300 p-3 text-sm ${className}`}
       />
     </div>

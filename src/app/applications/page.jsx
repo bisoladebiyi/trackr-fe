@@ -142,7 +142,7 @@ const Applications = () => {
                   {provided.placeholder}
                   <button
                     onClick={() => openAddModal(i)}
-                    className="text-xs text-primary flex items-center gap-x-1 mt-3"
+                    className="text-xs text-primary flex items-center gap-x-1 mt-3 cursor-pointer"
                   >
                     <FaPlus /> Add
                   </button>

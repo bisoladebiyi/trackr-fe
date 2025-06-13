@@ -2,15 +2,21 @@ import React from "react";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuFileStack } from "react-icons/lu";
 import { CgProfile } from "react-icons/cg";
-import { IoCalendarOutline, IoPeopleOutline, IoSettingsOutline } from "react-icons/io5";
+import {
+  IoCalendarOutline,
+  IoPeopleOutline,
+  IoSettingsOutline,
+} from "react-icons/io5";
 import { LiaSwatchbookSolid } from "react-icons/lia";
 import { FaRegFileAlt } from "react-icons/fa";
 import Link from "next/link";
 import { ROUTES } from "@/constants/routes";
+import Logo from "../Logo";
+import { IoIosLogOut } from "react-icons/io";
 
 const SideNav = ({ pageName }) => {
   return (
-    <div className="w-1/6 bg-gray-50 p-3 py-5 border-r border-gray-100 h-full">
+    <div className="w-1/6 bg-gray-50 p-3 py-5 border-r border-gray-100 h-full relative">
       <ul className="gap-y-3 flex flex-col">
         <Link href={ROUTES.DASHBOARD}>
           <li
@@ -20,7 +26,7 @@ const SideNav = ({ pageName }) => {
                 : ""
             }`}
           >
-            <MdOutlineSpaceDashboard className="text-xl text-primary" />{" "}
+            <MdOutlineSpaceDashboard className="text-xl text-primary" />
             Dashboard
           </li>
         </Link>
@@ -56,7 +62,9 @@ const SideNav = ({ pageName }) => {
         </Link>
       </ul>
 
-      <p className="mt-12 uppercase font-semibold text-sm mb-4 text-gray-500 px-2">coming soon</p>
+      <p className="mt-12 uppercase font-semibold text-sm mb-4 text-gray-500 px-2">
+        coming soon
+      </p>
       <ul className="gap-y-3 flex flex-col opacity-70 cursor-not-allowed">
         <li
           className={`flex items-center gap-2 text-gray-800 font-medium p-2 rounded-md text-sm `}
@@ -66,7 +74,8 @@ const SideNav = ({ pageName }) => {
         <li
           className={`flex items-center gap-2 text-gray-800 font-medium p-2 rounded-md text-sm `}
         >
-          <IoCalendarOutline className="text-xl text-primary" /> Calendar Integration
+          <IoCalendarOutline className="text-xl text-primary" /> Calendar
+          Integration
         </li>
         <li
           className={`flex items-center gap-2 text-gray-800 font-medium p-2 rounded-md text-sm`}
@@ -76,9 +85,16 @@ const SideNav = ({ pageName }) => {
         <li
           className={`flex items-center gap-2 text-gray-800 font-medium p-2 rounded-md text-sm `}
         >
-          <LiaSwatchbookSolid className="text-xl text-primary" /> Interview Prep Tools
+          <LiaSwatchbookSolid className="text-xl text-primary" /> Interview Prep
+          Tools
         </li>
       </ul>
+      <div className={"absolute bottom-4 left-0 flex items-center justify-between w-full px-3"}>
+        <Logo className={"text-base"} />
+        <button className={"cursor-pointer"}>
+          <IoIosLogOut className="text-2xl text-primary" />
+        </button>
+      </div>
     </div>
   );
 };
