@@ -11,6 +11,7 @@ export const applications = createApi({
       query: (uid) => ({
         url: API_ROUTES.DASHBOARD + `?uid=${uid}`,
       }),
+      providesTags: (result, error, uid) => [{ type: 'Dashboard', id: uid }]
     }),
     getApplications: builder.query({
       query: (uid) => ({
@@ -23,6 +24,7 @@ export const applications = createApi({
         method: "POST",
         body: application,
       }),
+      invalidatesTags: (result, error, { uid }) => [{ type: 'Dashboard', id: uid }]
     }),
     editApplication: builder.mutation({
       query: (application) => ({
@@ -30,6 +32,7 @@ export const applications = createApi({
         method: "PUT",
         body: application,
       }),
+      invalidatesTags: (result, error, { uid }) => [{ type: 'Dashboard', id: uid }]
     }),
     deleteApplication: builder.mutation({
       query: (id) => ({
