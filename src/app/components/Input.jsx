@@ -19,7 +19,7 @@ const Input = ({
           htmlFor={inputID}
           className="mb-2 text-sm font-semibold text-blue-950 capitalize"
         >
-          {label}
+          {label} {required && <span className="text-red-600">*</span>}
         </label>
         <select
           onChange={onChange}
@@ -45,7 +45,7 @@ const Input = ({
         htmlFor={inputID}
         className="mb-2 text-sm font-semibold text-blue-950 capitalize"
       >
-        {label}
+        {label} {required && <span className="text-red-600">*</span>}
       </label>
       <input
         type={type}

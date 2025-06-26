@@ -20,13 +20,13 @@ ChartJS.register(
   Legend
 );
 
-const DashLineChart = () => {
+const DashLineChart = ({ weeklyAppliedStats }) => {
   const data = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    labels: Object.keys(weeklyAppliedStats),
     datasets: [
       {
         label: "Applications",
-        data: [2, 4, 1, 3, 5, 0, 1],
+        data: Object.keys(weeklyAppliedStats).map((key) => weeklyAppliedStats[key]),
         fill: false,
         borderColor: "#6FE6FC",
         tension: 0.3,
@@ -55,7 +55,7 @@ const DashLineChart = () => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-xl shadow h-max w-1/2">
+    <div className="bg-white p-8 rounded-xl shadow h-max w-full">
       <h2 className="text-center text-lg text-gray-700 font-semibold mb-4">Applications This Week</h2>
       <Line data={data} options={options} className="w-full h-full" />
     </div>

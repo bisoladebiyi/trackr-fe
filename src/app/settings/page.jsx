@@ -1,38 +1,74 @@
 "use client";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
-import Layout from "@/components/Layout/Layout";
-import React, { useState } from "react";
+import Button from "@/app/components/Button";
+import Input from "@/app/components/Input";
+import Layout from "@/app/components/Layout/Layout";
+import { ROUTES } from "@/constants/routes";
+import {
+  useDeleteAccountMutation,
+  useUpdatePasswordMutation,
+} from "@/redux/features/user/userApiSlice";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Settings = () => {
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
   });
 
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleteAccount, { error: accountError }] = useDeleteAccountMutation();
+  const [updatePassword, { error: passwordError }] =
+    useUpdatePasswordMutation();
+  const user = useSelector((state) => state.auth.user);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.replace(ROUTES.LOGIN);
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("New passwords do not match.");
-      return;
+    try {
+      const res = await updatePassword({
+        current_password: passwordData.currentPassword,
+        new_password: passwordData.newPassword,
+        uid: user.id,
+      }).unwrap();
+      toast.success(res.message);
+      logout();
+    } catch (e) {
+      toast.error(e?.data?.detail || e?.error || passwordError?.error);
     }
-
-    console.log("Change password:", passwordData);
-    alert("Password changed (dummy alert)");
   };
 
-  const handleDeleteAccount = () => {
-    console.log("Account deleted");
-    alert("Account deleted (dummy alert)");
+  const handleDeleteAccount = async () => {
+    try {
+      const res = await deleteAccount(user.id).unwrap();
+      toast.success(res.message);
+      logout();
+    } catch (e) {
+      toast.error(e?.data?.detail || e?.error || accountError?.error);
+    }
   };
+
+  const logout = () => {
+    localStorage.clear();
+    router.push(ROUTES.LOGIN);
+  };
+
   return (
     <Layout pageName={"Settings"}>
       <div className="max-w-4xl">
@@ -60,7 +96,14 @@ const Settings = () => {
                 required
               />
             </div>
-            <Button text={"Update Password"} className={"mt-5"} disabled={!passwordData.newPassword || !passwordData.confirmPassword} />
+            <Button
+              text={"Update Password"}
+              className={"mt-5"}
+              disabled={
+                !passwordData.newPassword || !passwordData.currentPassword
+              }
+              type="submit"
+            />
           </div>
         </form>
 
@@ -75,8 +118,18 @@ const Settings = () => {
 
           {deleteConfirm ? (
             <div className="flex items-center gap-4">
-                <Button text={"Confirm Delete"} onClick={handleDeleteAccount} className={"bg-red-400 hover:bg-red-500 transition"}/>
-                <Button text={"Cancel"} onClick={() => setDeleteConfirm(false)} className={"bg-white border border-primary w-fit text-primary shadow"}/>
+              <Button
+                text={"Confirm Delete"}
+                onClick={handleDeleteAccount}
+                className={"bg-red-400 hover:bg-red-500 transition"}
+              />
+              <Button
+                text={"Cancel"}
+                onClick={() => setDeleteConfirm(false)}
+                className={
+                  "bg-white border border-primary w-fit text-primary shadow"
+                }
+              />
             </div>
           ) : (
             <button
